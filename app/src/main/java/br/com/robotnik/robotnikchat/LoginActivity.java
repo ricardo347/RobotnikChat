@@ -14,5 +14,8 @@ public class LoginActivity extends AppCompatActivity {
         Intent i = new Intent(this, ChatActivity.class);
         startActivity(i);
 
+
+
+
     }
 }
