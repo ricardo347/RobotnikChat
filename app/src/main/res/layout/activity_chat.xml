@@ -17,8 +17,9 @@
             android:id="@+id/chatRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#7B84C0"
             android:fastScrollEnabled="true"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical" />
 
     </LinearLayout>
 
@@ -30,12 +31,14 @@
 
 
         <EditText
+            android:id="@+id/chatEditText"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="5"
             />
 
         <Button
+            android:id="@+id/enviarButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

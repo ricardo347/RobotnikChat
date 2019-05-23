@@ -1,8 +1,8 @@
 package br.com.robotnik.robotnikchat;
 
 import android.content.Context;
-
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -28,26 +28,34 @@ public class ChatAdapter extends RecyclerView.Adapter <ChatAdapter.ChatViewHolde
         ChatViewHolder (View v){
 
             super (v);
-            chat.findViewById(R.id.botChatTextView);
-
+            chat = v.findViewById(R.id.botChatTextView);
+            logo = v.findViewById(R.id.botChatImageView);
         }
     }
     //quando um viewholder for criado
 
 
-
     @Override
-    public ChatViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        return null;
+    public ChatViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
+    {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View raiz = inflater.inflate(R.layout.bot_chat_view, viewGroup, false);
+
+        return new ChatViewHolder(raiz);
     }
     //quando um viewholder for vinculado ao recyclerview
+
+
     @Override
     public void onBindViewHolder(ChatViewHolder chatViewHolder, int i) {
+        Chat chatAtual = chats.get(i);
+        chatViewHolder.chat.setText(chats.get(i).getMensagem());
+
     }
     //qual o total de elementos?
     @Override
 
     public int getItemCount() {
-        return 0;
+        return chats.size();
     }
 }

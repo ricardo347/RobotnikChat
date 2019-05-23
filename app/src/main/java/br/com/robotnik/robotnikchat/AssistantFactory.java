@@ -11,6 +11,10 @@ import com.ibm.watson.assistant.v2.model.MessageOptions;
 import com.ibm.watson.assistant.v2.model.MessageResponse;
 import com.ibm.watson.assistant.v2.model.SessionResponse;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class AssistantFactory extends AsyncTask<String, Void, String> {
 
     private Assistant assistant;
@@ -18,6 +22,8 @@ public class AssistantFactory extends AsyncTask<String, Void, String> {
     private String apiKey;
     private String version;
     private String assistantId;
+    private String resposta;
+    private String pergunta;
 
     public AssistantFactory() {
         this.url = "https://gateway.watsonplatform.net/assistant/api";
@@ -34,11 +40,6 @@ public class AssistantFactory extends AsyncTask<String, Void, String> {
 
     }
 
-    public void perguntar(){
-
-    }
-
-
     @Override
     protected String doInBackground(String... strings) {
 
@@ -52,8 +53,6 @@ public class AssistantFactory extends AsyncTask<String, Void, String> {
 
         System.out.println(response);
 
-
-
         MessageInput input = new MessageInput.Builder()
                 .messageType("text")
                 .text("Meu computador está lento")
@@ -65,7 +64,30 @@ public class AssistantFactory extends AsyncTask<String, Void, String> {
 
         MessageResponse resposta = this.assistant.message(messageOptions).execute().getResult();
         Log.v("Mensagem", resposta.toString());
-        return resposta.toString();
+
+        return jsonParser(resposta.toString());//resposta.toString();
     }
 
+    private String jsonParser(String resultado){
+        try{
+            JSONObject json = new JSONObject(resultado);
+
+            Log.v("Tamanho do json inicial",""+json.length());
+            Log.v("Tamanho do json inicial",""+json.toString());
+            String resposta = json.getJSONObject("output")
+                    .getJSONArray("generic")
+                    .getJSONObject(0)
+                    .get("text")
+                    .toString();
+
+            Log.v("output", ""+ resposta);
+            return resposta;
+            //weatherAdapter.notifyDataSetChanged();
+        }
+        catch (JSONException e){
+            e.printStackTrace();
+            return "";
+        }
+
+    }
 }
