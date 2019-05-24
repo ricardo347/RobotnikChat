@@ -17,7 +17,7 @@
             android:id="@+id/chatRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#7B84C0"
+
             android:fastScrollEnabled="true"
             android:scrollbars="vertical" />
 

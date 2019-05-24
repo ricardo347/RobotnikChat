@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:paddingBottom="30dp"
+    android:paddingTop="10dp"
     >
 
     <android.support.v7.widget.AppCompatImageView
@@ -15,10 +17,12 @@
     <TextView
         android:id="@+id/botChatTextView"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="5"
-        android:textColor="@color/TextBlack"
-        android:paddingRight="100dp"
-        android:text="@string/lorem"/>
+        android:background="#91F595"
+        android:padding="10dp"
+        android:layout_marginRight="100dp"
+        android:text="@string/lorem"
+        android:textColor="@color/TextBlack" />
 
 </LinearLayout>

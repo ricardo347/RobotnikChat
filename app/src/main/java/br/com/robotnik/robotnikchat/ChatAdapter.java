@@ -2,6 +2,7 @@ package br.com.robotnik.robotnikchat;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class ChatAdapter extends RecyclerView.Adapter <ChatAdapter.ChatViewHolde
     {
         LayoutInflater inflater = LayoutInflater.from(context);
         View raiz = inflater.inflate(R.layout.bot_chat_view, viewGroup, false);
+         Log.v("viewholder","onCreateViewHolder "+i);
 
         return new ChatViewHolder(raiz);
     }
@@ -48,6 +50,7 @@ public class ChatAdapter extends RecyclerView.Adapter <ChatAdapter.ChatViewHolde
 
     @Override
     public void onBindViewHolder(ChatViewHolder chatViewHolder, int i) {
+    Log.v("viewholder","onBindViewHolder "+i);
         Chat chatAtual = chats.get(i);
         chatViewHolder.chat.setText(chats.get(i).getMensagem());
 
@@ -58,4 +61,7 @@ public class ChatAdapter extends RecyclerView.Adapter <ChatAdapter.ChatViewHolde
     public int getItemCount() {
         return chats.size();
     }
+
+
+
 }

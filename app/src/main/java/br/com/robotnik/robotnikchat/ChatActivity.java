@@ -57,9 +57,11 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //chats.add(new Chat("segundo", 1,null));
                 //adapter.notifyDataSetChanged();
-                chats.add(new Chat(chatEditText.getText().toString(),1,null));
-                adapter.notifyDataSetChanged();
+
+
                 if(chatEditText.getText().length() > 0){
+                    chats.add(new Chat(chatEditText.getText().toString(),1,null));
+                    adapter.notifyDataSetChanged();
                     new AssistantManager().execute(chatEditText.getText().toString());
                     chatEditText.setText("");
                 }
@@ -135,8 +137,6 @@ public class ChatActivity extends AppCompatActivity {
             try{
                 JSONObject json = new JSONObject(resultado);
 
-                Log.v("Tamanho do json inicial",""+json.length());
-                Log.v("Tamanho do json inicial",""+json.toString());
                 String resposta = json.getJSONObject("output")
                         .getJSONArray("generic")
                         .getJSONObject(0)
