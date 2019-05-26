@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class ChatAdapter extends RecyclerView.Adapter <ChatAdapter.ChatViewHolder> {
+public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
     private List<Chat> chats;
     private Context context;
 
@@ -21,40 +21,69 @@ public class ChatAdapter extends RecyclerView.Adapter <ChatAdapter.ChatViewHolde
     }
 
 
-    //viewholder
-    class ChatViewHolder extends RecyclerView.ViewHolder{
-       private TextView chat;
+    //viewholders personalizados para cada layout
+    public class BotViewHolder extends RecyclerView.ViewHolder{
+       private TextView mensagem;
        private ImageView logo;
 
-        ChatViewHolder (View v){
-
+        public BotViewHolder (View v){
             super (v);
-            chat = v.findViewById(R.id.botChatTextView);
+            mensagem = v.findViewById(R.id.botChatTextView);
             logo = v.findViewById(R.id.botChatImageView);
         }
     }
-    //quando um viewholder for criado
 
+    public class UserViewHolder extends RecyclerView.ViewHolder{
+        private TextView mensagem;
+        private ImageView logo;
+
+        public UserViewHolder (View v){
+            super (v);
+            mensagem = v.findViewById(R.id.userChatTextView);
+            logo = v.findViewById(R.id.userChatImageView);
+        }
+    }
+
+    //metodo que é chamado pelo onCreateViewHolder em seu parametro type
+    @Override
+    public int getItemViewType(int position){
+        return chats.get(position).getSender();
+    }
 
     @Override
-    public ChatViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
-    {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View raiz = inflater.inflate(R.layout.bot_chat_view, viewGroup, false);
-         Log.v("viewholder","onCreateViewHolder "+i);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int type)
+    {   View raiz = null;
+        LayoutInflater inflater;
 
-        return new ChatViewHolder(raiz);
+        switch (type) {
+            case 0:
+                inflater = LayoutInflater.from(context);
+                raiz = inflater.inflate(R.layout.bot_chat_view, viewGroup, false);
+                return new BotViewHolder(raiz);
+            case 1:
+                inflater = LayoutInflater.from(context);
+                raiz = inflater.inflate(R.layout.user_chat_view, viewGroup, false);
+                return new UserViewHolder(raiz);
+
+        }
+            return null;//nao chegara aqui
     }
     //quando um viewholder for vinculado ao recyclerview
-
-
     @Override
-    public void onBindViewHolder(ChatViewHolder chatViewHolder, int i) {
-    Log.v("viewholder","onBindViewHolder "+i);
-        Chat chatAtual = chats.get(i);
-        chatViewHolder.chat.setText(chats.get(i).getMensagem());
+    public void onBindViewHolder(RecyclerView.ViewHolder chatViewHolder, int i) {
 
+        switch (chatViewHolder.getItemViewType()) {
+            case 0: //mensagem do bot
+                ((BotViewHolder) chatViewHolder).mensagem.setText(chats.get(i).getMensagem());
+                break;
+            case 1:
+                ((UserViewHolder) chatViewHolder).mensagem.setText(chats.get(i).getMensagem());
+                break;
+            default:
+                    break;
+        }
     }
+
     //qual o total de elementos?
     @Override
 

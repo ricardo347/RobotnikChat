@@ -41,38 +41,32 @@ public class ChatActivity extends AppCompatActivity {
 
         chatRecyclerView =  findViewById(R.id.chatRecyclerView);
         chats = new ArrayList<>();
-        //chats.add(new Chat("primeiro", 1, null));
-        new AssistantManager().execute("Oi Chatbot, tudo bem?");
+         new AssistantManager().execute("Oi Chatbot, tudo bem?");
 
 
         adapter = new ChatAdapter(chats, this);
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         chatRecyclerView.setAdapter(adapter);
 
+
         chatEditText = findViewById(R.id.chatEditText);
         enviarButton = findViewById(R.id.enviarButton);
+
 
         enviarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //chats.add(new Chat("segundo", 1,null));
-                //adapter.notifyDataSetChanged();
-
 
                 if(chatEditText.getText().length() > 0){
                     chats.add(new Chat(chatEditText.getText().toString(),1,null));
                     adapter.notifyDataSetChanged();
                     new AssistantManager().execute(chatEditText.getText().toString());
                     chatEditText.setText("");
+                    chatRecyclerView.scrollToPosition(chats.size() - 1);
                 }
             }
 
         });
-
-        //AssistantFactory assistant = new AssistantFactory();
-        //assistant.execute("");
-
-
     }
 
     public class AssistantManager extends AsyncTask<String, Void, String> {
@@ -96,8 +90,7 @@ public class ChatActivity extends AppCompatActivity {
                     .build();
             this.assistant = new com.ibm.watson.assistant.v2.Assistant(version, options);
             this.assistant.setEndPoint(url);
-            Log.i("AssistantFactory","Construtor iniciado com suessso.");
-
+            //Log.i("AssistantFactory","Construtor iniciado com suessso.");
         }
 
         @Override
@@ -143,16 +136,17 @@ public class ChatActivity extends AppCompatActivity {
                         .get("text")
                         .toString();
 
-                Log.v("output", ""+ resposta);
+                //Log.v("output", ""+ resposta);
 
-                chats.add(new Chat(resposta,1,null));
+                chats.add(new Chat(resposta,0,null));
 
                 adapter.notifyDataSetChanged();
+                chatRecyclerView.scrollToPosition(chats.size() - 1);
+
 
             }
             catch (JSONException e){
                 e.printStackTrace();
-
             }
         }
     }
