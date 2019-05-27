@@ -18,20 +18,23 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@mipmap/robotinik" />
+            android:background="@mipmap/rb" />
     </LinearLayout>
 
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:columnCount="2">
+        android:columnCount="2"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
         <TextView
             android:id="@+id/lbNomeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/lblNome"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -39,7 +42,8 @@
 
         <EditText
             android:id="@+id/nomeEditText"
-            android:layout_width="match_parent"
+
+            android:layout_width="300dp"
             android:layout_height="wrap_content" />
 
         <TextView
@@ -54,14 +58,16 @@
 
         <EditText
             android:id="@+id/emailEditText"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/loginButton"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
             android:text="@string/btnEntrar" />
     </GridLayout>
 

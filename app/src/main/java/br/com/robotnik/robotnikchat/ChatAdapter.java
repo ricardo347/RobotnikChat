@@ -64,7 +64,6 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
                 inflater = LayoutInflater.from(context);
                 raiz = inflater.inflate(R.layout.user_chat_view, viewGroup, false);
                 return new UserViewHolder(raiz);
-
         }
             return null;//nao chegara aqui
     }

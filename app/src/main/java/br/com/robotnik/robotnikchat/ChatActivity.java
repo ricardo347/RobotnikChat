@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.ibm.cloud.sdk.core.service.security.IamOptions;
 import com.ibm.watson.assistant.v2.Assistant;
@@ -28,7 +29,7 @@ public class ChatActivity extends AppCompatActivity {
     private ChatAdapter adapter;
     private List<Chat> chats;
     private RecyclerView chatRecyclerView;
-    private Button enviarButton;
+    private ImageButton enviarButton;
     private EditText chatEditText;
 
 
@@ -101,10 +102,7 @@ public class ChatActivity extends AppCompatActivity {
             service.setEndPoint(this.url);
 
             CreateSessionOptions options = new CreateSessionOptions.Builder(this.assistantId).build();
-
             SessionResponse response = service.createSession(options).execute().getResult();
-
-            System.out.println(response);
 
             MessageInput input = new MessageInput.Builder()
                     .messageType("text")
@@ -136,7 +134,6 @@ public class ChatActivity extends AppCompatActivity {
                         .get("text")
                         .toString();
 
-                //Log.v("output", ""+ resposta);
 
                 chats.add(new Chat(resposta,0,null));
 
