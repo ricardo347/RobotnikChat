@@ -6,8 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -25,11 +28,30 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
     public class BotViewHolder extends RecyclerView.ViewHolder{
        private TextView mensagem;
        private ImageView logo;
+       private Button yesButton;
+       private Button noButton;
 
         public BotViewHolder (View v){
             super (v);
+            yesButton = v.findViewById(R.id.yesButton);
+            noButton = v.findViewById(R.id.noButton);
             mensagem = v.findViewById(R.id.botChatTextView);
             logo = v.findViewById(R.id.botChatImageView);
+
+
+            yesButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   Log.v("botao yes", mensagem.getText().toString());
+                }
+            });
+
+            noButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
     }
 
