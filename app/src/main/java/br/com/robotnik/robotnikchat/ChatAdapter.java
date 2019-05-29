@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
        private ImageView logo;
        private Button yesButton;
        private Button noButton;
+       int cont;
 
         public BotViewHolder (View v){
             super (v);
@@ -37,19 +39,30 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
             noButton = v.findViewById(R.id.noButton);
             mensagem = v.findViewById(R.id.botChatTextView);
             logo = v.findViewById(R.id.botChatImageView);
-
+            cont = 0;
 
             yesButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                    Log.v("botao yes", mensagem.getText().toString());
+                   yesButton.setEnabled(false);
+                   noButton.setEnabled(false);
                 }
             });
+
 
             noButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(cont <= 3) {
+                        AssistantFactory assistant = new AssistantFactory(((RecyclerView) v.getParent().getParentForAccessibility()), chats);
+                        assistant.execute(getUltimaPergunta());
+                        yesButton.setEnabled(false);
+                        noButton.setEnabled(false);
+                        cont++;
+                    }else{
 
+                    }
                 }
             });
         }
@@ -112,6 +125,16 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
         return chats.size();
     }
 
+    private String getUltimaPergunta(){
+        //for regressivo até achar a ultima pergunta feita pelo usuario
 
+
+        for (int i = chats.size(); i >= 0; --i ){
+
+            if (chats.get(i-1).getSender() == 1)
+                return chats.get(i-1).getMensagem();
+        }
+        return "x";
+    }
 
 }

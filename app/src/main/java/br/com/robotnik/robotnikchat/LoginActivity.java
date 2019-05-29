@@ -36,14 +36,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.v("email",email.getText().toString());
-                if(padraoEmail.matcher(email.getText().toString()).matches()){
+                //if(padraoEmail.matcher(email.getText().toString()).matches()){
                     Intent i = new Intent(LoginActivity.this, ChatActivity.class);
                     startActivity(i);
-                }else{
-                    Toast.makeText(getApplicationContext(), "Digite um texto valido", Toast.LENGTH_SHORT).show();
+                //}else{
+                    //Toast.makeText(getApplicationContext(), "Digite um texto valido", Toast.LENGTH_SHORT).show();
                     //emaiemail.setText("");
 
-                }
+                //}
             }
         });
 
