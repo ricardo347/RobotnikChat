@@ -92,7 +92,7 @@ public class AssistantFactory extends AsyncTask<String, Void, String> {
                     .toString();
 
             if(chats != null)//foi usado o construtor que traz o Array de Chats, msg do Bot
-                chats.add(new Chat(resposta,0,null, 0));
+                chats.add(new Chat(resposta,0));
 
             chatRecyclerView.getAdapter().notifyDataSetChanged();
             chatRecyclerView.scrollToPosition(chats.size() - 1);

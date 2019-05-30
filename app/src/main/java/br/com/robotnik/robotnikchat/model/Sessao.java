@@ -1,8 +1,12 @@
 package br.com.robotnik.robotnikchat.model;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 public class Sessao {
     private List<Interacao> interacoes;
@@ -10,14 +14,19 @@ public class Sessao {
     private String inicio;
     private String fim;
     private int id;
+    private boolean fechada;
 
 
-    public Sessao(int id, Usuario usuario, String inicio, String fim){
+    public Sessao(int id, Usuario usuario, Timestamp inicio, Timestamp fim){
         this.id = id;
-        this.inicio = inicio;
-        this.fim = fim;
         this.usuario = usuario;
         interacoes = new ArrayList<>();
+        fechada = false;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        this.inicio = sdf.format(inicio);
+        this.fim = sdf.format(fim);
+
+
     }
 
 
@@ -33,16 +42,18 @@ public class Sessao {
         return inicio;
     }
 
-    public void setInicio(String inicio) {
-        this.inicio = inicio;
+    public void setInicio(Timestamp inicio) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        this.inicio = sdf.format(inicio);
     }
 
     public String getFim() {
         return fim;
     }
 
-    public void setFim(String fim) {
-        this.fim = fim;
+    public void setFim(Timestamp fim) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        this.fim = sdf.format(fim);
     }
 
     public int getId() {
@@ -53,6 +64,14 @@ public class Sessao {
         this.id = id;
     }
 
+    public boolean isFechada() {
+        return fechada;
+    }
+
+    public void setFechada(boolean fechada) {
+        this.fechada = fechada;
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -60,4 +79,6 @@ public class Sessao {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+
 }

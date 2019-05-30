@@ -10,23 +10,28 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import br.com.robotnik.robotnikchat.control.AssistantFactory;
 import br.com.robotnik.robotnikchat.R;
 import br.com.robotnik.robotnikchat.model.Interacao;
+import br.com.robotnik.robotnikchat.model.InteracaoDAO;
 import br.com.robotnik.robotnikchat.model.Sessao;
+import br.com.robotnik.robotnikchat.model.SessaoDAO;
 
 public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
     private List<Chat> chats;
     private Context context;
     private Sessao sessao;
+    private int tentativa;
 
 
     public ChatAdapter (List <Chat> chats, Sessao sessao, Context context){
         this.chats = chats;
         this.context = context;
         this.sessao = sessao;
+        this.tentativa = 1;
     }
 
 
@@ -36,7 +41,8 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
        private ImageView logo;
        private Button yesButton;
        private Button noButton;
-       int cont;
+       private TextView lblYesNoTextView;
+
 
         public BotViewHolder (View v){
             super (v);
@@ -44,7 +50,7 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
             noButton = v.findViewById(R.id.noButton);
             mensagem = v.findViewById(R.id.botChatTextView);
             logo = v.findViewById(R.id.botChatImageView);
-            cont = 0;
+            lblYesNoTextView = v.findViewById(R.id.lblYesNoTextView);
 
             yesButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -53,7 +59,26 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
                    yesButton.setEnabled(false);
                    noButton.setEnabled(false);
                    //finalizar o atendimento
-                    //sessao.setFim();
+                    sessao.setFim(new Timestamp(System.currentTimeMillis()));
+
+                    //exibir a mensagem de agradecimento
+                    chats.add(new Chat("Obrigado por usar o Chatbot!, foi um prazer ajudá-lo!",2));
+                    notifyDataSetChanged();
+                    ((RecyclerView) v.getParent().getParentForAccessibility()).scrollToPosition(chats.size() -1);
+
+                    //salvando sessão no banco
+                    //adiciona a interação atual
+                    sessao.getInteracoes().add(
+                            new Interacao(
+                                    sessao.getUsuario(),
+                                    sessao.getId(),
+                                    getUltimaPergunta(),
+                                    mensagem.getText().toString(),
+                                    1,
+                                    tentativa));
+                    tentativa++;
+                    SessaoDAO sessaoDAO = new SessaoDAO(context);
+                    sessaoDAO.insereSessao(sessao);
                 }
             });
 
@@ -61,16 +86,50 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
             noButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(cont <= 3) {
+                    if(tentativa <3 ) {
+
+                        //realiza a pergunta na base e desabilita os botões de satisfação após o uso;
                         AssistantFactory assistant = new AssistantFactory(((RecyclerView) v.getParent().getParentForAccessibility()), chats);
                         assistant.execute(getUltimaPergunta());
                         yesButton.setEnabled(false);
                         noButton.setEnabled(false);
-                        //adicionar uma interação
+
+                        //adiciona a interação atual
                         sessao.getInteracoes().add(
-                                new Interacao(sessao.getUsuario(),getUltimaPergunta(),mensagem.getText().toString(),0,cont);
-                        cont++;
-                    }else{
+                                new Interacao(
+                                        sessao.getUsuario(),
+                                        sessao.getId(),
+                                        getUltimaPergunta(),
+                                        mensagem.getText().toString(),
+                                        0,
+                                        tentativa));
+                        tentativa++;
+
+                        //se depois do ultimo incremento (3), fecha a sessão
+                        if(tentativa >=3)
+                            sessao.setFechada(true);
+                    }else{ //sem solução
+                        //finaliza sessão
+
+                        //exibe a mensagem de utilização de outro meio
+                        chats.add(new Chat("Contate o suporte Telefonico para encontrar a solução adequada. Atendimento finalizado",2));
+                        notifyDataSetChanged();
+                        ((RecyclerView) v.getParent().getParentForAccessibility()).scrollToPosition(chats.size() -1);
+
+                        // salva a sessão no banco
+                        sessao.getInteracoes().add(
+                                new Interacao(
+                                        sessao.getUsuario(),
+                                        sessao.getId(),
+                                        getUltimaPergunta(),
+                                        mensagem.getText().toString(),
+                                        0,
+                                        tentativa));
+                        tentativa++;
+                        sessao.setFim(new Timestamp(System.currentTimeMillis()));
+                        SessaoDAO sessaoDAO = new SessaoDAO(context);
+                        sessaoDAO.insereSessao(sessao);
+
 
                     }
                 }
@@ -89,6 +148,17 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
         }
     }
 
+    public class PopupViewHolder extends RecyclerView.ViewHolder{
+        private TextView mensagem;
+        private ImageView logo;
+
+        public PopupViewHolder (View v){
+            super (v);
+            mensagem = v.findViewById(R.id.popupChatTextView);
+            logo = v.findViewById(R.id.popupChatImageView);
+        }
+    }
+
     //metodo que é chamado pelo onCreateViewHolder em seu parametro type
     @Override
     public int getItemViewType(int position){
@@ -104,11 +174,19 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
             case 0:
                 inflater = LayoutInflater.from(context);
                 raiz = inflater.inflate(R.layout.bot_chat_view, viewGroup, false);
-                return new BotViewHolder(raiz);
+                BotViewHolder bv = new BotViewHolder(raiz);
+
+                return bv;//new BotViewHolder(raiz);
+
             case 1:
                 inflater = LayoutInflater.from(context);
                 raiz = inflater.inflate(R.layout.user_chat_view, viewGroup, false);
                 return new UserViewHolder(raiz);
+
+            case 2:
+                inflater = LayoutInflater.from(context);
+                raiz = inflater.inflate(R.layout.popup_chat_view, viewGroup, false);
+                return new PopupViewHolder(raiz);
         }
             return null;//nao chegara aqui
     }
@@ -116,12 +194,30 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder chatViewHolder, int i) {
 
+        chatViewHolder.setIsRecyclable(false);
         switch (chatViewHolder.getItemViewType()) {
+
             case 0: //mensagem do bot
+                Log.v("BIND", "sessao: "+sessao.isFechada());
+                if(i == 0 ) {
+                    //((BotViewHolder) chatViewHolder).yesButton.setText("modificado");
+                    ((BotViewHolder) chatViewHolder).yesButton.setVisibility(View.GONE);
+                    ((BotViewHolder) chatViewHolder).noButton.setVisibility(View.GONE);
+                    ((BotViewHolder) chatViewHolder).lblYesNoTextView.setVisibility(View.GONE);
+                }
+
+                if(i+1 < chats.size()) {
+                    ((BotViewHolder) chatViewHolder).yesButton.setEnabled(false);
+                    ((BotViewHolder) chatViewHolder).noButton.setEnabled(false);
+                }
+
                 ((BotViewHolder) chatViewHolder).mensagem.setText(chats.get(i).getMensagem());
                 break;
             case 1:
                 ((UserViewHolder) chatViewHolder).mensagem.setText(chats.get(i).getMensagem());
+                break;
+            case 2:
+                ((PopupViewHolder) chatViewHolder).mensagem.setText(chats.get(i).getMensagem());
                 break;
             default:
                     break;

@@ -44,8 +44,8 @@ public class ChatContract {
     public static String createTableSessao(){
         return String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "%s INTEGER," +
-                "%s DATETIME, " +
-                "%s DATETIME, FOREIGN KEY(%s) REFERENCES %s(%s))",
+                "%s TEXT, " +
+                "%s TEXT, FOREIGN KEY(%s) REFERENCES %s(%s))",
                 SessaoContract.TABLE_NAME,
                 SessaoContract.COLUMN_NAME_ID,
                 SessaoContract.COLUMN_NAME_ID_USUARIO,
@@ -106,7 +106,7 @@ public class ChatContract {
                                          int satisfatoria,
                                          int numTentativa) {
         return String.format(
-                "INSERT INTO %s (%s,%s,%s,%s,%) VALUES (%s,'%s','%s',%s,%s)",
+                "INSERT INTO %s (%s,%s,%s,%s,%S) VALUES (%s,'%s','%s',%s,%s)",
                 InteracaoContract.TABLE_NAME,
                 InteracaoContract.COLUMN_NAME_ID_SESSAO,
                 InteracaoContract.COLUMN_NAME_PERGUNTA,

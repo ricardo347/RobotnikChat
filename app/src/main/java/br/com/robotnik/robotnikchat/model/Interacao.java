@@ -6,18 +6,21 @@ public class Interacao {
     private String resposta;
     private int satisfatoria;
     private int numtentativa;
+    private int idsessao;
 
     public Interacao(Usuario usuario,
+                     int idsessao,
                      String pergunta,
                      String resposta,
                      int satisfatoria,
                      int numtentativa){
-
+        this.idsessao = idsessao;
         this.usuario = usuario;
         this.pergunta = pergunta;
         this.resposta = resposta;
         this.satisfatoria = satisfatoria;
         this.numtentativa = numtentativa;
+
     }
 
 
@@ -59,5 +62,13 @@ public class Interacao {
 
     public Usuario getUsuario(){
         return this.usuario;
+    }
+
+    public int getIdsessao() {
+        return idsessao;
+    }
+
+    public void setIdsessao(int idsessao) {
+        this.idsessao = idsessao;
     }
 }
