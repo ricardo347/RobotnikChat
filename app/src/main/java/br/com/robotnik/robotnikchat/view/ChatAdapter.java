@@ -1,4 +1,4 @@
-package br.com.robotnik.robotnikchat;
+package br.com.robotnik.robotnikchat.view;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,21 +7,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
+
+import br.com.robotnik.robotnikchat.control.AssistantFactory;
+import br.com.robotnik.robotnikchat.R;
+import br.com.robotnik.robotnikchat.model.Interacao;
+import br.com.robotnik.robotnikchat.model.Sessao;
 
 public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
     private List<Chat> chats;
     private Context context;
+    private Sessao sessao;
 
-    public ChatAdapter (List <Chat> chats, Context context){
+
+    public ChatAdapter (List <Chat> chats, Sessao sessao, Context context){
         this.chats = chats;
         this.context = context;
+        this.sessao = sessao;
     }
 
 
@@ -47,6 +52,8 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
                    Log.v("botao yes", mensagem.getText().toString());
                    yesButton.setEnabled(false);
                    noButton.setEnabled(false);
+                   //finalizar o atendimento
+                    //sessao.setFim();
                 }
             });
 
@@ -59,6 +66,9 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
                         assistant.execute(getUltimaPergunta());
                         yesButton.setEnabled(false);
                         noButton.setEnabled(false);
+                        //adicionar uma interação
+                        sessao.getInteracoes().add(
+                                new Interacao(sessao.getUsuario(),getUltimaPergunta(),mensagem.getText().toString(),0,cont);
                         cont++;
                     }else{
 

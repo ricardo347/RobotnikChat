@@ -1,4 +1,4 @@
-package br.com.robotnik.robotnikchat;
+package br.com.robotnik.robotnikchat.control;
 
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +16,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+
+import br.com.robotnik.robotnikchat.view.Chat;
 
 public class AssistantFactory extends AsyncTask<String, Void, String> {
 
@@ -90,7 +92,7 @@ public class AssistantFactory extends AsyncTask<String, Void, String> {
                     .toString();
 
             if(chats != null)//foi usado o construtor que traz o Array de Chats, msg do Bot
-                chats.add(new Chat(resposta,0,null));
+                chats.add(new Chat(resposta,0,null, 0));
 
             chatRecyclerView.getAdapter().notifyDataSetChanged();
             chatRecyclerView.scrollToPosition(chats.size() - 1);

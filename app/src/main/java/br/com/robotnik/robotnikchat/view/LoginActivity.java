@@ -1,4 +1,4 @@
-package br.com.robotnik.robotnikchat;
+package br.com.robotnik.robotnikchat.view;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,9 +7,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.regex.Pattern;
+
+import br.com.robotnik.robotnikchat.R;
+import br.com.robotnik.robotnikchat.model.Usuario;
+import br.com.robotnik.robotnikchat.model.UsuarioDAO;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -38,6 +41,8 @@ public class LoginActivity extends AppCompatActivity {
                 Log.v("email",email.getText().toString());
                 //if(padraoEmail.matcher(email.getText().toString()).matches()){
                     Intent i = new Intent(LoginActivity.this, ChatActivity.class);
+                UsuarioDAO usuarioDAO = new UsuarioDAO(getApplicationContext());
+                usuarioDAO.insereUsuario(new Usuario(1, nome.getText().toString(), email.getText().toString()));
                     startActivity(i);
                 //}else{
                     //Toast.makeText(getApplicationContext(), "Digite um texto valido", Toast.LENGTH_SHORT).show();

@@ -1,29 +1,20 @@
-package br.com.robotnik.robotnikchat;
+package br.com.robotnik.robotnikchat.view;
 
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.ibm.cloud.sdk.core.service.security.IamOptions;
-import com.ibm.watson.assistant.v2.Assistant;
-import com.ibm.watson.assistant.v2.model.CreateSessionOptions;
-import com.ibm.watson.assistant.v2.model.MessageInput;
-import com.ibm.watson.assistant.v2.model.MessageOptions;
-import com.ibm.watson.assistant.v2.model.MessageResponse;
-import com.ibm.watson.assistant.v2.model.SessionResponse;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import br.com.robotnik.robotnikchat.control.AssistantFactory;
+import br.com.robotnik.robotnikchat.R;
+import br.com.robotnik.robotnikchat.model.Sessao;
+import br.com.robotnik.robotnikchat.model.Usuario;
 
 public class ChatActivity extends AppCompatActivity {
     private ChatAdapter adapter;
@@ -31,6 +22,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView chatRecyclerView;
     private ImageButton enviarButton;
     private EditText chatEditText;
+    private Sessao sessao;
 
 
     @Override
@@ -42,10 +34,22 @@ public class ChatActivity extends AppCompatActivity {
 
         chatRecyclerView =  findViewById(R.id.chatRecyclerView);
         chats = new ArrayList<>();
-         //new AssistantManager().execute("Oi Chatbot, tudo bem?");
+        //inicialização da sessão
+
+        //recuperar o usuario do login do intent
+        sessao = new Sessao(
+                1,
+                new Usuario(
+                        1,
+                        "nome",
+                        "email"
+                ),
+                "",
+                ""
+        );
 
 
-        adapter = new ChatAdapter(chats, this);
+        adapter = new ChatAdapter(chats, sessao, this);
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         chatRecyclerView.setAdapter(adapter);
 
@@ -59,7 +63,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(chatEditText.getText().length() > 0){
-                    chats.add(new Chat(chatEditText.getText().toString(),1,null));
+                    chats.add(new Chat(chatEditText.getText().toString(),1,null,0));
                     adapter.notifyDataSetChanged();
 
                     AssistantFactory assistant  = new AssistantFactory(chatRecyclerView, chats);
