@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class ReportAdapter extends RecyclerView.Adapter <ReportAdapter.ReportVie
     public ReportAdapter(List<Report> reports, Context context){
         this.reports = reports;
         this.context = context;
-        Log.v("ReportAdapter","Sessao" +reports.get(0).getSessao());
-        Log.v("ReportAdapter ","Usuario" +reports.get(1).getUsuario());
+        Log.v("ReportAdapter","Sessao " +reports.get(0).getSessao());
+        Log.v("ReportAdapter ","Usuario " +reports.get(1).getResolvido());
     }
 
     public class ReportViewHolder extends RecyclerView.ViewHolder{
@@ -32,6 +33,7 @@ public class ReportAdapter extends RecyclerView.Adapter <ReportAdapter.ReportVie
         private TextView pergutaTextView;
         private TextView respostaTextView;
         private TextView resolvidoTextView;
+        private LinearLayout reportLinearLayout;
 
         public ReportViewHolder(View v){
 
@@ -43,6 +45,8 @@ public class ReportAdapter extends RecyclerView.Adapter <ReportAdapter.ReportVie
             pergutaTextView = v.findViewById(R.id.rptPerguntaTextView);
             respostaTextView = v.findViewById(R.id.rptRespostaTextView);
             resolvidoTextView = v.findViewById(R.id.rptTentativaTextView);
+            reportLinearLayout = v.findViewById(R.id.rptLinearLayout);
+
         }
     }
 
@@ -59,15 +63,21 @@ public class ReportAdapter extends RecyclerView.Adapter <ReportAdapter.ReportVie
     }
 
     @Override
-    public void onBindViewHolder(ReportViewHolder reportViewHolder, int i){
+    public void onBindViewHolder(ReportViewHolder reportViewHolder, int i) {
 
-        reportViewHolder.sessaoTextView.setText("dsasdfasdf");
+        reportViewHolder.sessaoTextView.setText(String.valueOf(reports.get(i).getSessao()));
         reportViewHolder.usuarioTextView.setText(reports.get(i).getUsuario());
-        //((ReportViewHolder) reportViewHolder).inicioTextView.setText(reports.get(i).getInicio());
-        //((ReportViewHolder) reportViewHolder).fimTextView.setText(reports.get(i).getFim());
-        //((ReportViewHolder) reportViewHolder).pergutaTextView.setText(reports.get(i).getPergunta());
-        //((ReportViewHolder) reportViewHolder).respostaTextView.setText(reports.get(i).getResposta());
-        //((ReportViewHolder) reportViewHolder).resolvidoTextView.setText(reports.get(i).getResolvido());
+        reportViewHolder.inicioTextView.setText(reports.get(i).getInicio());
+        reportViewHolder.fimTextView.setText(reports.get(i).getFim());
+        reportViewHolder.pergutaTextView.setText(reports.get(i).getPergunta());
+        reportViewHolder.respostaTextView.setText(reports.get(i).getResposta());
+        reportViewHolder.resolvidoTextView.setText(reports.get(i).getResolvido() > 0 ? String.valueOf(reports.get(i).getResolvido()) : "N/A");
+        if (reports.get(i).getResolvido() > 0) {
+            reportViewHolder.reportLinearLayout.setBackgroundResource(R.color.Resolvido);
+        } else {
+            reportViewHolder.reportLinearLayout.setBackgroundResource(R.color.NaoResolvido);
+        }
+
     }
 
     @Override

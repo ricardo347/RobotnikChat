@@ -4,6 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +32,13 @@ public class ReportActivity extends AppCompatActivity {
 
         SessaoDAO sessaoDAO = new SessaoDAO(this);
         sessoes = sessaoDAO.buscaSessaoPorData("","");
+        Gson obj = new Gson();
+        Log.v("sessoes",""+ obj.toJson(sessoes));
 
         for (Sessao sessao : sessoes){
             Interacao i = sessao.getInteracaoResolvida();
             reports.add(new Report(
+
                     sessao.getId(),
                     sessao.getUsuario().getNome(),
                     sessao.getInicio(),
@@ -49,3 +55,4 @@ public class ReportActivity extends AppCompatActivity {
         reportsRecyclerView.setAdapter(adapter);
     }
 }
+

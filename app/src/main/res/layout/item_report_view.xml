@@ -3,53 +3,129 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rptLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginLeft="8dp"
+    android:padding="3dp"
+
    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/rptSessaoTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Sessao:"/>
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/rptMarginBottom">
 
-        <TextView
-            android:id="@+id/rptUsuarioTextView"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Usuario"
-            />
+            android:layout_weight="0.7">
+            <TextView
+                android:id="@+id/rptLblSessaoTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/rptLblTextSize"
+                android:layout_marginRight="@dimen/rptlblMarginRight"
+                android:textStyle="bold"
+                android:text="Sessao:"
+                />
+
+            <TextView
+                android:id="@+id/rptSessaoTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/rptTextSize"
+
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/rptLblUsuarioTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/rptLblTextSize"
+                android:layout_marginRight="@dimen/rptlblMarginRight"
+                android:text="Usuario:"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/rptUsuarioTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/rptTextSize"
+
+                />
+        </LinearLayout>
+
+
     </LinearLayout>
 
     <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/rptInicioTextView"
+    android:layout_weight="1"
+    android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/rptMarginBottom">
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Inicio"
-            />
+            android:layout_weight="0.7">
+            <TextView
+                android:id="@+id/rptLblInicioTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/rptLblTextSize"
+                android:layout_marginRight="@dimen/rptlblMarginRight"
+                android:text="Inicio"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/rptInicioTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/rptTextSize"
 
-        <TextView
-            android:id="@+id/rptPerguntaTextView"
+                />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/rptlblPerguntaTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/rptlblMarginRight"
+                android:textSize="@dimen/rptLblTextSize"
+                android:text="Pergunta"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/rptPerguntaTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/rptTextSize"
 
-            android:text="Pergunta"
-            />
+                />
+        </LinearLayout>
+
 
     </LinearLayout>
 
@@ -57,44 +133,111 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/rptFimTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Fim"
-            />
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/rptMarginBottom">
 
-        <TextView
-            android:id="@+id/rptRespostaTextView"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Resposta"
-            />
+            android:layout_weight="0.7">
+            <TextView
+                android:id="@+id/rptlblFimTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/rptLblTextSize"
+                android:layout_marginRight="@dimen/rptlblMarginRight"
+                android:text="Fim"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/rptFimTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/rptTextSize"
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/rptlblRespostaTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/rptLblTextSize"
+                android:layout_marginRight="@dimen/rptlblMarginRight"
+                android:text="Resposta"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/rptRespostaTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/rptTextSize"
+
+                />
+        </LinearLayout>
+
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/rptTentativaTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Resolvido:"
-            />
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/rptMarginBottom">
 
-        <TextView
-            android:id="@+id/rptQtdInteracoesTextView"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Nº Interacoes"
-            />
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/rptlblTentativaTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/rptLblTextSize"
+                android:layout_marginRight="@dimen/rptlblMarginRight"
+                android:text="Resolvido na tentativa:"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/rptTentativaTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/rptTextSize"
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/rptlblQtdInteracoesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/rptLblTextSize"
+                android:layout_marginRight="@dimen/rptlblMarginRight"
+                android:text="Nº Interacoes"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/rptQtdInteracoesTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/rptTextSize"
+
+                />
+        </LinearLayout>
+
     </LinearLayout>
 
 

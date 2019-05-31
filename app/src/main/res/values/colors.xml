@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#333534</color>
     <color name="colorAccent">#405dbc</color>
     <color name="TextBlack">#FF000000</color>
+    <color name="Resolvido">#DA8BC34A</color>
+    <color name="NaoResolvido">#E8FF544F</color>
 </resources>

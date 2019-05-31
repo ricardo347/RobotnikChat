@@ -24,17 +24,34 @@ public class SessaoDAO {
         ChatDbHelper dbHelper = new ChatDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String sql = String.format(
-                "SELECT * FROM %s ", ChatContract.SessaoContract.TABLE_NAME);
+                "SELECT %s.*," +
+                        "%s.%s, " +
+                        "%s.%s " +
+                        "FROM %s " +
+                        "INNER JOIN %s " +
+                        "ON %s.%s = %s.%s",
+                ChatContract.SessaoContract.TABLE_NAME,
+                ChatContract.UsuarioContract.TABLE_NAME,
+                ChatContract.UsuarioContract.COLUMN_NAME_NOME,
+                ChatContract.UsuarioContract.TABLE_NAME,
+                ChatContract.UsuarioContract.COLUMN_NAME_EMAIL,
+                ChatContract.SessaoContract.TABLE_NAME,
+                ChatContract.UsuarioContract.TABLE_NAME,
+                ChatContract.UsuarioContract.TABLE_NAME,
+                ChatContract.UsuarioContract.COLUMN_NAME_ID,
+                ChatContract.SessaoContract.TABLE_NAME,
+                ChatContract.SessaoContract.COLUMN_NAME_ID_USUARIO);
 
         Cursor cursor = db.rawQuery(sql,null);
         while(cursor.moveToNext()){
            sessoes.add(new Sessao(cursor.getInt(cursor.getColumnIndex(ChatContract.SessaoContract.COLUMN_NAME_ID)),
-                                  new Usuario (cursor.getInt(cursor.getColumnIndex(ChatContract.SessaoContract.COLUMN_NAME_ID)),null, null),
+                                  new Usuario (cursor.getInt(cursor.getColumnIndex(ChatContract.SessaoContract.COLUMN_NAME_ID)),
+                                          cursor.getString(cursor.getColumnIndex(ChatContract.UsuarioContract.COLUMN_NAME_NOME)),
+                                          cursor.getString(cursor.getColumnIndex(ChatContract.UsuarioContract.COLUMN_NAME_EMAIL))),
                                   cursor.getString(cursor.getColumnIndex(ChatContract.SessaoContract.COLUMN_NAME_DTINICIO)),
                                   cursor.getString(cursor.getColumnIndex(ChatContract.SessaoContract.COLUMN_NAME_DTFIM))));
         }
         cursor.close();
-
 
         //busca de interações
         for(int i = 0;i <  sessoes.size(); i++){
