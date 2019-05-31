@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.regex.Pattern;
 
@@ -39,20 +42,40 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.v("email",email.getText().toString());
-                //if(padraoEmail.matcher(email.getText().toString()).matches()){
+                if(padraoEmail.matcher(email.getText().toString()).matches()){
                     Intent i = new Intent(LoginActivity.this, ChatActivity.class);
                 UsuarioDAO usuarioDAO = new UsuarioDAO(getApplicationContext());
                 usuarioDAO.insereUsuario(new Usuario(1, nome.getText().toString(), email.getText().toString()));
                     startActivity(i);
-                //}else{
-                    //Toast.makeText(getApplicationContext(), "Digite um texto valido", Toast.LENGTH_SHORT).show();
-                    //emaiemail.setText("");
+                }else{
+                    Toast.makeText(getApplicationContext(), "Digite um texto valido", Toast.LENGTH_SHORT).show();
+                    email.setText("");
 
-                //}
+                }
             }
         });
 
 
-
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
+
+        switch (item.getItemId()) {
+            case R.id.menu_relatorios:
+                Intent i = new Intent(LoginActivity.this, ReportActivity.class);
+                startActivity(i);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

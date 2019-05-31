@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import br.com.robotnik.robotnikchat.view.Chat;
+
 public class ChatDbHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "chats.db";
     private static final int DB_VERSION = 1;
@@ -15,10 +17,9 @@ public class ChatDbHelper extends SQLiteOpenHelper {
 
     }
 
-
-
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         db.execSQL(ChatContract.createTableUsuario());
         db.execSQL(ChatContract.createTableSessao());
         db.execSQL(ChatContract.createTableInteracao());
@@ -28,4 +29,6 @@ public class ChatDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
+
 }

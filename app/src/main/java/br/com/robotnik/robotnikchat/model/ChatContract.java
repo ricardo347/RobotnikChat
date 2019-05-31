@@ -120,6 +120,15 @@ public class ChatContract {
                 numTentativa);
     }
 
+    public static String dropTableSessao(){
+        return "DROP TABLE SESSAO";
+    }
+    public static String dropTableInteracao(){
+        return "DROP TABLE INTERACAO";
+    }
+    public static String dropTableUsuario(){
+        return "DROP TABLE USUARIO";
+    }
 
 
 }

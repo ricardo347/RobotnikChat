@@ -7,4 +7,9 @@
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Cras gravida vel ante eu ullamcorper. Duis ultrices tempor magna,
         eu molestie arcu luctus eleifend</string>
+    <string-array name="filtros">
+        <item>Diario</item>
+        <item>Semanal</item>
+        <item>Mensal</item>
+    </string-array>/
 </resources>

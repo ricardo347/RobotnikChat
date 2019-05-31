@@ -2,6 +2,7 @@ package br.com.robotnik.robotnikchat.model;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,14 +18,24 @@ public class Sessao {
     private boolean fechada;
 
 
-    public Sessao(int id, Usuario usuario, Timestamp inicio, Timestamp fim){
+    public Sessao(int id, Usuario usuario, String inicio, String fim){
         this.id = id;
         this.usuario = usuario;
         interacoes = new ArrayList<>();
         fechada = false;
+
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        this.inicio = sdf.format(inicio);
-        this.fim = sdf.format(fim);
+
+        try {
+            Date datei = sdf.parse(inicio);
+            Date datef = sdf.parse(fim);
+            this.inicio = sdf.format(datei);
+            this.fim = sdf.format(datef);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -80,5 +91,13 @@ public class Sessao {
         this.usuario = usuario;
     }
 
+    public Interacao getInteracaoResolvida(){
+
+        for(Interacao i : this.interacoes){
+            if(i.getSatisfatoria() == 1)
+                return i;
+        }
+        return null;
+    }
 
 }

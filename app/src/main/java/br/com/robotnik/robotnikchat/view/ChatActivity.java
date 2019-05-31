@@ -50,8 +50,8 @@ public class ChatActivity extends AppCompatActivity {
                         "nome",
                         "email"
                 ),
-                new Timestamp(System.currentTimeMillis()),
-                new Timestamp(System.currentTimeMillis())
+                new Timestamp(System.currentTimeMillis()).toString(),
+                new Timestamp(System.currentTimeMillis()).toString()
         );
 
 

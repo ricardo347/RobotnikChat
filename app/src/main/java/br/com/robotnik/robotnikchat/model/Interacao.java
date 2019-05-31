@@ -1,5 +1,7 @@
 package br.com.robotnik.robotnikchat.model;
 
+import java.util.List;
+
 public class Interacao {
     private Usuario usuario;
     private String pergunta;
@@ -71,4 +73,6 @@ public class Interacao {
     public void setIdsessao(int idsessao) {
         this.idsessao = idsessao;
     }
+
+
 }
