@@ -1,6 +1,7 @@
 package br.com.robotnik.robotnikchat.model;
 
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import java.util.Date;
 
@@ -89,6 +90,16 @@ public class ChatContract {
         );
     }
     public static String insereSessao(int idusuario, String inicio, String fim){
+        String log = String.format(
+                "INSERT INTO %s (%s,%s,%s) VALUES (%s,'%s', '%s')",
+                SessaoContract.TABLE_NAME,
+                SessaoContract.COLUMN_NAME_ID_USUARIO,
+                SessaoContract.COLUMN_NAME_DTINICIO,
+                SessaoContract.COLUMN_NAME_DTFIM,
+                idusuario,
+                inicio,
+                fim);
+        Log.v("insert", "Insert Sessao"+log);
         return String.format(
                 "INSERT INTO %s (%s,%s,%s) VALUES (%s,'%s', '%s')",
                 SessaoContract.TABLE_NAME,

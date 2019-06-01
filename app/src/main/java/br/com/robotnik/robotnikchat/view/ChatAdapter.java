@@ -127,6 +127,7 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
                                         tentativa));
                         tentativa++;
                         sessao.setFim(new Timestamp(System.currentTimeMillis()));
+                        Log.v("salvando","salvando fim "+sessao.getFim());
                         SessaoDAO sessaoDAO = new SessaoDAO(context);
                         sessaoDAO.insereSessao(sessao);
 

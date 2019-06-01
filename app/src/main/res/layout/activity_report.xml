@@ -6,39 +6,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:orientation="vertical"
     tools:context=".view.ReportActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/rptLayoutSideMargin"
         android:layout_marginTop="10dp"
-        >
+        android:layout_marginRight="@dimen/rptLayoutSideMargin"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Filtrar:"/>
+            android:text="Filtrar:" />
+
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/rptSpinner"
             android:layout_width="0dp"
-            android:layout_weight="3"
             android:layout_height="wrap_content"
-            android:entries="@array/filtros"
-            />
+            android:layout_weight="3"
+            android:entries="@array/filtros" />
 
     </LinearLayout>
-
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/rptLayoutSideMargin"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginRight="@dimen/rptLayoutSideMargin"
+        android:layout_marginBottom="5dp"
+        android:background="#2D00BCD4"
+        android:orientation="horizontal">
 
 
         <LinearLayout
@@ -48,46 +53,105 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/rptQtdResolvido1TextView"
+                android:id="@+id/rpLbltQtdResolvidoTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Resolvidos: :"
-                />
+                android:textStyle="bold"
+                android:text="Total Resolvidos" />
 
-            <TextView
-                android:id="@+id/rptQtdResolvido1TextView"
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/rptLblQtdResolvido1TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/rptlblMarginRight"
+                    android:textSize="@dimen/rptLblTextSize"
+                    android:text="1ª Tentativa:"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/rptQtdResolvido1TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/rptTextSize"
+
+                    android:text="10" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="1ª Tentativa:"
-                />
-            <TextView
-                android:id="@+id/rptQtdResolvido2TextView"
+                >
+                <TextView
+                    android:id="@+id/rptLblQtdResolvido2TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/rptlblMarginRight"
+                    android:textSize="@dimen/rptLblTextSize"
+                    android:textStyle="bold"
+                    android:text="2ª Tentativa:" />
+
+                <TextView
+                    android:id="@+id/rptQtdResolvido2TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/rptTextSize"
+                    android:text="10" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="2ª Tentativa: "
-                />
-            <TextView
-                android:id="@+id/rptQtdResolvido3TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="3ª Tentativa: "
-                />
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/rptLblQtdResolvido3TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/rptLblTextSize"
+                    android:layout_marginRight="@dimen/rptlblMarginRight"
+                    android:text="3ª Tentativa:" />
+                <TextView
+                    android:id="@+id/rptQtdResolvido3TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/rptTextSize"
+                    android:text="10" />
+            </LinearLayout>
+
 
 
         </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/rptQtdInteracoesTextView"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Nº Interacoes:"
-            />
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/rptLblQtdInteracoesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginRight="@dimen/rptlblMarginRight"
+                android:textSize="@dimen/rptLblTextSize"
+                android:text="Total Interacoes:" />
+            <TextView
+                android:id="@+id/rptQtdInteracoesTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/rptTextSize"
+                android:text="10" />
+        </LinearLayout>
+
+
 
     </LinearLayout>
 
@@ -96,8 +160,8 @@
         android:id="@+id/reportRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:fastScrollEnabled="true"
-        android:scrollbars="vertical"
-        android:layout_marginTop="5dp"/>
+        android:scrollbars="vertical" />
 
 </LinearLayout>

@@ -4,12 +4,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.com.robotnik.robotnikchat.control.AssistantFactory;
@@ -38,6 +40,9 @@ public class ChatActivity extends AppCompatActivity {
         chatRecyclerView =  findViewById(R.id.chatRecyclerView);
         chats = new ArrayList<>();
 
+
+
+
         //inicialização da sessão
         //recuperar o usuario do login do intent
 
@@ -53,7 +58,7 @@ public class ChatActivity extends AppCompatActivity {
                 new Timestamp(System.currentTimeMillis()).toString(),
                 new Timestamp(System.currentTimeMillis()).toString()
         );
-
+        Log.v("Chat", "timestamp" +   new Timestamp(System.currentTimeMillis()).toString());
 
 
         adapter = new ChatAdapter(chats, sessao, this);

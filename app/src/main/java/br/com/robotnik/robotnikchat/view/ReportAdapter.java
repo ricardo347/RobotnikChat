@@ -21,8 +21,8 @@ public class ReportAdapter extends RecyclerView.Adapter <ReportAdapter.ReportVie
     public ReportAdapter(List<Report> reports, Context context){
         this.reports = reports;
         this.context = context;
-        Log.v("ReportAdapter","Sessao " +reports.get(0).getSessao());
-        Log.v("ReportAdapter ","Usuario " +reports.get(1).getResolvido());
+        //Log.v("ReportAdapter","Sessao " +reports.get(0).getSessao());
+        //Log.v("ReportAdapter ","Usuario " +reports.get(1).getResolvido());
     }
 
     public class ReportViewHolder extends RecyclerView.ViewHolder{

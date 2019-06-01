@@ -1,5 +1,7 @@
 package br.com.robotnik.robotnikchat.model;
 
+import android.util.Log;
+
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -25,19 +27,13 @@ public class Sessao {
         fechada = false;
 
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-
-        try {
-            Date datei = sdf.parse(inicio);
-            Date datef = sdf.parse(fim);
-            this.inicio = sdf.format(datei);
-            this.fim = sdf.format(datef);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
 
+            this.inicio = inicio;
+            Log.v("sessao", "inicio: "+ this.inicio);
+            this.fim = fim;
+            Log.v("sessao", "fim: "+ this.fim);
     }
 
 
@@ -54,8 +50,8 @@ public class Sessao {
     }
 
     public void setInicio(Timestamp inicio) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        this.inicio = sdf.format(inicio);
+
+        this.inicio = inicio.toString();
     }
 
     public String getFim() {
@@ -63,8 +59,8 @@ public class Sessao {
     }
 
     public void setFim(Timestamp fim) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        this.fim = sdf.format(fim);
+
+        this.fim = fim.toString();
     }
 
     public int getId() {
