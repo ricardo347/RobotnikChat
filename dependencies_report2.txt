@@ -1,0 +1,2 @@
+Starting a Gradle Daemon, 1 incompatible and 3 stopped Daemons could not be reused, use --status for details
+Deseja finalizar o arquivo em lotes (S/N)? Deseja finalizar o arquivo em lotes (S/N)? Deseja finalizar o arquivo em lotes (S/N)? 

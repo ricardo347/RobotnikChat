@@ -1,0 +1,10 @@
+
+Welcome to Gradle 5.1.1!
+
+Here are the highlights of this release:
+ - Control which dependencies can be retrieved from which repositories
+ - Production-ready configuration avoidance APIs
+
+For more details see https://docs.gradle.org/5.1.1/release-notes.html
+
+Starting a Gradle Daemon, 1 incompatible Daemon could not be reused, use --status for details
