@@ -1,13 +1,17 @@
 package br.com.robotnik.robotnikchat.view;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -27,7 +31,10 @@ public class ChatActivity extends AppCompatActivity {
     private ImageButton enviarButton;
     private EditText chatEditText;
     private Sessao sessao;
-    private final String BOAS_VINDAS = "Olá, sou Robotnik, em que posso te ajudar?";
+    private String BOAS_VINDAS;
+    private int idUsuario;
+    private String nomeUsuario;
+    private String emailUsuario;
 
 
     @Override
@@ -36,11 +43,37 @@ public class ChatActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
+        Intent loginIntent = getIntent();
+        idUsuario = loginIntent.getExtras().getInt("idUsuario");
+        nomeUsuario = loginIntent.getExtras().getString("nomeUsuario");
+        emailUsuario = loginIntent.getExtras().getString("emailUsuario");
+        BOAS_VINDAS = String.format("Ola %s, sou Robotnik, em que posso te ajudar", nomeUsuario);
         chatRecyclerView =  findViewById(R.id.chatRecyclerView);
+        chatEditText = findViewById(R.id.chatEditText);
+        enviarButton = findViewById(R.id.enviarButton);
         chats = new ArrayList<>();
 
+        chatEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
+                switch (actionId){
+                    case EditorInfo
+                            .IME_ACTION_DONE:
+                        chats.add(new Chat(chatEditText.getText().toString(),1));
+                        adapter.notifyDataSetChanged();
+
+                        AssistantFactory assistant  = new AssistantFactory(chatRecyclerView, chats);
+                        assistant.execute(chatEditText.getText().toString());
+
+                        chatEditText.setText("");
+                        chatRecyclerView.scrollToPosition(chats.size() - 1);
+                        chatEditText.setEnabled(false);
+                }
+
+                return false;
+            }
+        });
 
 
         //inicialização da sessão
@@ -51,15 +84,13 @@ public class ChatActivity extends AppCompatActivity {
         sessao = new Sessao(
                 sessaoDAO.getProximaSessao(),
                 new Usuario(
-                        sessaoDAO.getProximaSessao(),
-                        "nome",
-                        "email"
+                        idUsuario,
+                        nomeUsuario,
+                        emailUsuario
                 ),
                 new Timestamp(System.currentTimeMillis()).toString(),
                 new Timestamp(System.currentTimeMillis()).toString()
         );
-        Log.v("Chat", "timestamp" +   new Timestamp(System.currentTimeMillis()).toString());
-
 
         adapter = new ChatAdapter(chats, sessao, this);
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -67,10 +98,6 @@ public class ChatActivity extends AppCompatActivity {
 
         chats.add(new Chat(BOAS_VINDAS,0));
         adapter.notifyDataSetChanged();
-
-        chatEditText = findViewById(R.id.chatEditText);
-        enviarButton = findViewById(R.id.enviarButton);
-
 
         enviarButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,8 +114,6 @@ public class ChatActivity extends AppCompatActivity {
                     chatRecyclerView.scrollToPosition(chats.size() - 1);
                     chatEditText.setEnabled(false);
                 }
-
-
             }
 
         });

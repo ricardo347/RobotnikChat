@@ -1,14 +1,19 @@
 package br.com.robotnik.robotnikchat.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.regex.Pattern;
@@ -28,8 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -41,21 +44,33 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("email",email.getText().toString());
+
                 if(padraoEmail.matcher(email.getText().toString()).matches()){
                     Intent i = new Intent(LoginActivity.this, ChatActivity.class);
-                UsuarioDAO usuarioDAO = new UsuarioDAO(getApplicationContext());
-                usuarioDAO.insereUsuario(new Usuario(1, nome.getText().toString(), email.getText().toString()));
+
+                //VERIFICAR SE O USUÁRIO JA EXISTE, SENÃO EXISTE PEGA O PROXIMO ID, CRIA O USUARIO E PASSA O ID POR INTENT
+
+                    UsuarioDAO usuarioDAO = new UsuarioDAO(getApplicationContext());
+                    Usuario usuarioLogado  = usuarioDAO.buscaUsuario(nome.getText().toString(), email.getText().toString());
+
+                    if (usuarioLogado == null) { //usuario nao existe, precisa criar outro
+                        i.putExtra("idUsuario", usuarioDAO.getProximoIdUsuario());
+                        usuarioDAO.insereUsuario(new Usuario(1, nome.getText().toString(), email.getText().toString()));
+                    }else{ //ja existe não será criado
+                        i.putExtra("idUsuario", usuarioLogado.getId());
+                    }
+
+                    i.putExtra("nomeUsuario", nome.getText().toString());
+                    i.putExtra("emailUsuario", email.getText().toString());
                     startActivity(i);
+
+
                 }else{
                     Toast.makeText(getApplicationContext(), "Digite um texto valido", Toast.LENGTH_SHORT).show();
                     email.setText("");
-
                 }
             }
         });
-
-
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
 
         switch (item.getItemId()) {
             case R.id.menu_relatorios:
@@ -77,5 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 
 }

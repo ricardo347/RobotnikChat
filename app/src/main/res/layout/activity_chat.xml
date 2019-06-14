@@ -35,6 +35,8 @@
             android:id="@+id/chatEditText"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:inputType="text"
+            android:imeOptions="actionDone"
             android:layout_weight="5"
             />
 

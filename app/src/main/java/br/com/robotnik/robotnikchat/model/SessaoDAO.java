@@ -319,7 +319,6 @@ public class SessaoDAO {
         dbHelper.close();
 
 
-
         InteracaoDAO interacaoDAO = new InteracaoDAO(context);
         for(Interacao interacao : sessao.getInteracoes()){
             interacaoDAO.insereInteracao(interacao);

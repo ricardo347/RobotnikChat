@@ -62,7 +62,7 @@ public class ReportActivity extends AppCompatActivity {
                     case 0: //diario
 
                         cal.setTimeInMillis(ts.getTime());
-                        cal.add(Calendar.DAY_OF_MONTH, 30);
+                        cal.add(Calendar.DAY_OF_MONTH, -1);
                         inicio =  new Timestamp(cal.getTime().getTime()).toString();
                         break;
                     case 1: //semanal
@@ -79,8 +79,9 @@ public class ReportActivity extends AppCompatActivity {
 
                         break;
                 }
+                reports.clear();
+                reports = getSessoesFiltradasPorData(inicio, new Timestamp(System.currentTimeMillis()).toString());
 
-                reports  = getSessoesFiltradasPorData(inicio, new Timestamp(System.currentTimeMillis()).toString());
                 adapter.notifyDataSetChanged();
                 Log.v("tempo","inicio "+ new Timestamp(cal.getTime().getTime()).toString() +"fim "+ new Timestamp(System.currentTimeMillis()).toString());
             }
@@ -99,7 +100,6 @@ public class ReportActivity extends AppCompatActivity {
         SessaoDAO sessaoDAO = new SessaoDAO(this);
         List<Sessao> sessoes = sessaoDAO.getSessaoPorData(inicio, fim);
         //List<Report> reports = new ArrayList<>();
-
 
         for (Sessao sessao : sessoes){
             Interacao i = sessao.getInteracaoResolvida();
