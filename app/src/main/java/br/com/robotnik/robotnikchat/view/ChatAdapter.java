@@ -119,7 +119,7 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
                         //finaliza sessão
 
                         //exibe a mensagem de utilização de outro meio
-                        chats.add(new Chat("Contate o suporte Telefonico para encontrar a solução adequada. Atendimento finalizado",2));
+                        chats.add(new Chat("Contate o suporte Telefonico  no para encontrar a solução adequada. Atendimento finalizado",2));
                         notifyDataSetChanged();
                         ((RecyclerView) v.getParent().getParentForAccessibility()).scrollToPosition(chats.size() -1);
 

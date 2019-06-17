@@ -90,7 +90,8 @@ public class LoginActivity extends AppCompatActivity {
                     i.putExtra("nomeUsuario", nome.getText().toString());
                     i.putExtra("emailUsuario", email.getText().toString());
                     startActivity(i);
-
+                    nome.setText("");
+                    email.setText("");
 
                 }else{
                     Toast.makeText(getApplicationContext(), "Digite um email valido", Toast.LENGTH_SHORT).show();
@@ -134,7 +135,6 @@ public class LoginActivity extends AppCompatActivity {
             if (isConnected) {
                 Log.v("Estado da Rede", "voltou");
             }else{
-
                 Log.v("Estado da Rede", "Caiu!!!!!!!!!");
             }
         }
