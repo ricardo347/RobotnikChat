@@ -8,6 +8,7 @@ public class Report {
     private String resposta;
     private String pergunta;
     private int resolvido;
+    private int qtdTentativas;
 
 
     public Report(
@@ -17,6 +18,7 @@ public class Report {
             String fim,
             String resposta,
             String pergunta,
+            int qtdTentativas,
             int resolvido){
 
         this.sessao=sessao;
@@ -25,6 +27,7 @@ public class Report {
         this.fim = fim;
         this.resposta = resposta;
         this.pergunta = pergunta;
+        this.qtdTentativas = qtdTentativas;
         this.resolvido = resolvido;
 
     }
@@ -83,6 +86,14 @@ public class Report {
 
     public void setResolvido(int resolvido) {
         this.resolvido = resolvido;
+    }
+
+    public int getQtdTentativas() {
+        return qtdTentativas;
+    }
+
+    public void setQtdTentativas(int tentativas) {
+        this.qtdTentativas = tentativas;
     }
 }
 

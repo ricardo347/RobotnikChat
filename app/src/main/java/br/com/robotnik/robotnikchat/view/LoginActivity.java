@@ -1,7 +1,16 @@
 package br.com.robotnik.robotnikchat.view;
 
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
+import android.net.NetworkRequest;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,9 +25,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ibm.cloud.sdk.core.service.security.IamOptions;
+import com.ibm.watson.assistant.v2.Assistant;
+import com.ibm.watson.assistant.v2.model.CreateSessionOptions;
+import com.ibm.watson.assistant.v2.model.MessageInput;
+import com.ibm.watson.assistant.v2.model.MessageOptions;
+import com.ibm.watson.assistant.v2.model.MessageResponse;
+import com.ibm.watson.assistant.v2.model.SessionResponse;
+
 import java.util.regex.Pattern;
 
 import br.com.robotnik.robotnikchat.R;
+import br.com.robotnik.robotnikchat.control.ConnectionStateMonitor;
 import br.com.robotnik.robotnikchat.model.Usuario;
 import br.com.robotnik.robotnikchat.model.UsuarioDAO;
 
@@ -40,6 +58,15 @@ public class LoginActivity extends AppCompatActivity {
         nome = findViewById(R.id.nomeEditText);
         email = findViewById(R.id.emailEditText);
         loginButton = findViewById(R.id.loginButton);
+
+        //IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        //ConnectionStateMonitor connectivityReceiver = new ConnectionStateMonitor(this);
+        //connectivityReceiver.enable(this);
+
+        //filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+
+        //NetworkChangeReceiver receiver = new NetworkChangeReceiver();
+        //registerReceiver(receiver, filter);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 }else{
-                    Toast.makeText(getApplicationContext(), "Digite um texto valido", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Digite um email valido", Toast.LENGTH_SHORT).show();
                     email.setText("");
                 }
             }
@@ -93,6 +120,25 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    public class NetworkChangeReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+
+            ConnectivityManager cm =
+                    (ConnectivityManager)context.getSystemService(
+                            Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+            boolean isConnected = (activeNetwork != null) && activeNetwork.isConnected();
+            if (isConnected) {
+                Log.v("Estado da Rede", "voltou");
+            }else{
+
+                Log.v("Estado da Rede", "Caiu!!!!!!!!!");
+            }
+        }
+    }
 
 
 }

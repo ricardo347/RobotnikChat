@@ -3,6 +3,8 @@ package br.com.robotnik.robotnikchat.control;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.ibm.cloud.sdk.core.service.security.IamOptions;
 import com.ibm.watson.assistant.v2.Assistant;
@@ -17,7 +19,9 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import br.com.robotnik.robotnikchat.R;
 import br.com.robotnik.robotnikchat.view.Chat;
+import br.com.robotnik.robotnikchat.view.ChatAdapter;
 
 public class AssistantFactory extends AsyncTask<String, Void, String> {
 
@@ -32,6 +36,7 @@ public class AssistantFactory extends AsyncTask<String, Void, String> {
     private List<Chat> chats;
 
 
+
     public AssistantFactory(RecyclerView view, List<Chat> chats) {
         this.url = "https://gateway.watsonplatform.net/assistant/api";
         this.apiKey = "FnNkUk_YRYZIZ3d-bWRqGtC6XAlE0zGpZD9NTSVOcUi_";
@@ -40,16 +45,13 @@ public class AssistantFactory extends AsyncTask<String, Void, String> {
         this.chatRecyclerView = view;
         this.chats = chats;
 
-
-        IamOptions options = new IamOptions.Builder()
-                .apiKey(apiKey)
-                .build();
-        this.assistant = new com.ibm.watson.assistant.v2.Assistant(version, options);
-        this.assistant.setEndPoint(url);
+        //IamOptions options = new IamOptions.Builder()
+                //.apiKey(apiKey)
+                //.build();
+        //this.assistant = new com.ibm.watson.assistant.v2.Assistant(version, options);
+        //this.assistant.setEndPoint(url);
         //Log.i("AssistantFactory","Construtor iniciado com suessso.");
     }
-
-
 
     @Override
     protected String doInBackground(String... strings) {
@@ -70,7 +72,7 @@ public class AssistantFactory extends AsyncTask<String, Void, String> {
                 .input(input)
                 .build();
 
-        MessageResponse resposta = this.assistant.message(messageOptions).execute().getResult();
+        MessageResponse resposta = service.message(messageOptions).execute().getResult();
         Log.v("Mensagem", resposta.toString());
 
         return resposta.toString();
@@ -90,9 +92,19 @@ public class AssistantFactory extends AsyncTask<String, Void, String> {
                     .getJSONObject(0)
                     .get("text")
                     .toString();
+            int intent = json.getJSONObject("output")
+                    .getJSONArray("intents")
+                    .length();
+
 
             if(chats != null)//foi usado o construtor que traz o Array de Chats, msg do Bot
-                chats.add(new Chat(resposta,0));
+                if(intent == 0) { //se o intent for 0, é pq a pergunta não foi reconhecida e deve ser digitada novamente
+                    ((EditText) ((LinearLayout) ((LinearLayout) chatRecyclerView.getParent().getParent()).getChildAt(1)).getChildAt(0)).setEnabled(true);
+                    chats.add(new Chat(resposta, 2));
+                    ((ChatAdapter) chatRecyclerView.getAdapter()).incrementTentativa();
+                }else{
+                    chats.add(new Chat(resposta, 0));
+                }
 
             chatRecyclerView.getAdapter().notifyDataSetChanged();
             chatRecyclerView.scrollToPosition(chats.size() - 1);

@@ -32,6 +32,7 @@ public class ReportActivity extends AppCompatActivity {
     private TextView rptQtdResolvido1TextView;
     private TextView rptQtdResolvido2TextView;
     private TextView rptQtdResolvido3TextView;
+    private TextView rptTotalInteracoesTextView;
     private Spinner spinner;
 
     @Override
@@ -46,12 +47,22 @@ public class ReportActivity extends AppCompatActivity {
         reportsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         reportsRecyclerView.setAdapter(adapter);
 
+        rptQtdResolvido1TextView = findViewById(R.id.rptQtdResolvido1TextView);
+        rptQtdResolvido2TextView = findViewById(R.id.rptQtdResolvido2TextView);
+        rptQtdResolvido3TextView = findViewById(R.id.rptQtdResolvido3TextView);
+        rptTotalInteracoesTextView = findViewById(R.id.rptQtdInteracoesTextView);
+
+        rptQtdResolvido1TextView.setText(String.valueOf(getTotalResovidas(1)));
+        rptQtdResolvido2TextView.setText(String.valueOf(getTotalResovidas(2)));
+        rptQtdResolvido3TextView.setText(String.valueOf(getTotalResovidas(3)));
+        rptTotalInteracoesTextView.setText(String.valueOf(getTotalInteracoes()));
+
 
         spinner = findViewById(R.id.rptSpinner);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.v("spinner", ""+ parent.getItemAtPosition(position).toString());
+                Log.v("spinner", ""+ position);
 
                 Timestamp ts = new Timestamp(System.currentTimeMillis());
                 Calendar cal = Calendar.getInstance();
@@ -59,31 +70,43 @@ public class ReportActivity extends AppCompatActivity {
                 String inicio = "";
 
                 switch (position){
-                    case 0: //diario
+                    case 0://selecione um intervalo
+                        reports.clear();
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case 1: //diario
 
                         cal.setTimeInMillis(ts.getTime());
                         cal.add(Calendar.DAY_OF_MONTH, -1);
                         inicio =  new Timestamp(cal.getTime().getTime()).toString();
+                        reports.clear();
+                        reports = getSessoesFiltradasPorData(inicio, new Timestamp(System.currentTimeMillis()).toString());
+                        adapter.notifyDataSetChanged();
                         break;
-                    case 1: //semanal
+                    case 2: //semanal
 
                         cal.setTimeInMillis(ts.getTime());
                         cal.add(Calendar.DAY_OF_MONTH, -7);
                         inicio =  new Timestamp(cal.getTime().getTime()).toString();
+                        reports.clear();
+                        reports = getSessoesFiltradasPorData(inicio, new Timestamp(System.currentTimeMillis()).toString());
+                        adapter.notifyDataSetChanged();
                         break;
-                    case 2: //mensal
+                    case 3: //mensal
 
                         cal.setTimeInMillis(ts.getTime());
                         cal.add(Calendar.MONTH, -1);
                         inicio =  new Timestamp(cal.getTime().getTime()).toString();
+                        reports.clear();
+                        reports = getSessoesFiltradasPorData(inicio, new Timestamp(System.currentTimeMillis()).toString());
+                        adapter.notifyDataSetChanged();
 
                         break;
+                    default:
+                        break;
                 }
-                reports.clear();
-                reports = getSessoesFiltradasPorData(inicio, new Timestamp(System.currentTimeMillis()).toString());
 
-                adapter.notifyDataSetChanged();
-                Log.v("tempo","inicio "+ new Timestamp(cal.getTime().getTime()).toString() +"fim "+ new Timestamp(System.currentTimeMillis()).toString());
+               // Log.v("tempo","inicio "+ new Timestamp(cal.getTime().getTime()).toString() +"fim "+ new Timestamp(System.currentTimeMillis()).toString());
             }
 
             @Override
@@ -91,8 +114,6 @@ public class ReportActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     public List<Report> getSessoesFiltradasPorData(String inicio, String fim){
@@ -111,10 +132,10 @@ public class ReportActivity extends AppCompatActivity {
                     sessao.getFim(),
                     i == null ? "" : i.getResposta(),
                     sessao.getInteracoes().get(0).getPergunta(),
+                    sessao.getInteracoes().size(),
                     i == null ? 0 : i.getNumtentativa()
             ));
         }
-
         return reports;
     }
 
@@ -130,8 +151,19 @@ public class ReportActivity extends AppCompatActivity {
                 }
             }
         }
-
         return result;
+    }
+
+    public int getTotalInteracoes(){
+        SessaoDAO sessaoDAO = new SessaoDAO(this);
+        int interacoes = 0;
+
+        for(Sessao sessao : sessaoDAO.getTodasSessoes()){
+            for (Interacao i :  sessao.getInteracoes()){
+                interacoes++;
+            }
+        }
+        return interacoes;
     }
 
 }

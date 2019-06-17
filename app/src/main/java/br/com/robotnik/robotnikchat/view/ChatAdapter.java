@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 import br.com.robotnik.robotnikchat.control.AssistantFactory;
 import br.com.robotnik.robotnikchat.R;
+import br.com.robotnik.robotnikchat.control.ConnectionStateMonitor;
 import br.com.robotnik.robotnikchat.model.Interacao;
 import br.com.robotnik.robotnikchat.model.InteracaoDAO;
 import br.com.robotnik.robotnikchat.model.Sessao;
@@ -25,15 +27,15 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
     private Context context;
     private Sessao sessao;
     private int tentativa;
-
+    private ConnectionStateMonitor monitor;
 
     public ChatAdapter (List <Chat> chats, Sessao sessao, Context context){
         this.chats = chats;
         this.context = context;
         this.sessao = sessao;
         this.tentativa = 1;
+        this.monitor = new ConnectionStateMonitor(context);
     }
-
 
     //viewholders personalizados para cada layout
     public class BotViewHolder extends RecyclerView.ViewHolder{
@@ -87,27 +89,32 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     if(tentativa <3 ) {
+                        //verifica monitor de conexão
+                        if(monitor.getConnectivityStatus()){
+                            //realiza a pergunta na base e desabilita os botões de satisfação após o uso;
+                            AssistantFactory assistant = new AssistantFactory(((RecyclerView) v.getParent().getParentForAccessibility()), chats);
+                            assistant.execute(getUltimaPergunta());
+                            yesButton.setEnabled(false);
+                            noButton.setEnabled(false);
 
-                        //realiza a pergunta na base e desabilita os botões de satisfação após o uso;
-                        AssistantFactory assistant = new AssistantFactory(((RecyclerView) v.getParent().getParentForAccessibility()), chats);
-                        assistant.execute(getUltimaPergunta());
-                        yesButton.setEnabled(false);
-                        noButton.setEnabled(false);
+                            //adiciona a interação atual
+                            sessao.getInteracoes().add(
+                                    new Interacao(
+                                            sessao.getUsuario(),
+                                            sessao.getId(),
+                                            getUltimaPergunta(),
+                                            mensagem.getText().toString(),
+                                            0,
+                                            tentativa));
+                            tentativa++;
 
-                        //adiciona a interação atual
-                        sessao.getInteracoes().add(
-                                new Interacao(
-                                        sessao.getUsuario(),
-                                        sessao.getId(),
-                                        getUltimaPergunta(),
-                                        mensagem.getText().toString(),
-                                        0,
-                                        tentativa));
-                        tentativa++;
+                            //se depois do ultimo incremento (3), fecha a sessão
+                            if(tentativa >=3)
+                                sessao.setFechada(true);
+                        }else{
+                            Toast.makeText(context, "Verifique sua conexão com a internet", Toast.LENGTH_SHORT).show();
+                        }
 
-                        //se depois do ultimo incremento (3), fecha a sessão
-                        if(tentativa >=3)
-                            sessao.setFechada(true);
                     }else{ //sem solução
                         //finaliza sessão
 
@@ -130,8 +137,6 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
                         Log.v("salvando","salvando fim "+sessao.getFim());
                         SessaoDAO sessaoDAO = new SessaoDAO(context);
                         sessaoDAO.insereSessao(sessao);
-
-
                     }
                 }
             });
@@ -235,13 +240,42 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> 
     private String getUltimaPergunta(){
         //for regressivo até achar a ultima pergunta feita pelo usuario
 
-
         for (int i = chats.size(); i >= 0; --i ){
-
             if (chats.get(i-1).getSender() == 1)
                 return chats.get(i-1).getMensagem();
         }
         return "x";
     }
 
+    public List<Chat> getChats() {
+        return chats;
+    }
+
+    public void setChats(List<Chat> chats) {
+        this.chats = chats;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public Sessao getSessao() {
+        return sessao;
+    }
+
+    public void setSessao(Sessao sessao) {
+        this.sessao = sessao;
+    }
+
+    public int getTentativa() {
+        return tentativa;
+    }
+
+    public void incrementTentativa() {
+        this.tentativa ++;
+    }
 }

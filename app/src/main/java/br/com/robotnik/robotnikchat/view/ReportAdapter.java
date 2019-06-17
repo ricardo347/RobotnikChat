@@ -33,6 +33,7 @@ public class ReportAdapter extends RecyclerView.Adapter <ReportAdapter.ReportVie
         private TextView pergutaTextView;
         private TextView respostaTextView;
         private TextView resolvidoTextView;
+        private TextView totalInteracoesTextView;
         private LinearLayout reportLinearLayout;
 
         public ReportViewHolder(View v){
@@ -46,6 +47,7 @@ public class ReportAdapter extends RecyclerView.Adapter <ReportAdapter.ReportVie
             respostaTextView = v.findViewById(R.id.rptRespostaTextView);
             resolvidoTextView = v.findViewById(R.id.rptTentativaTextView);
             reportLinearLayout = v.findViewById(R.id.rptLinearLayout);
+            totalInteracoesTextView = v.findViewById(R.id.rptQtdInteracoesTextView);
 
         }
     }
@@ -77,6 +79,7 @@ public class ReportAdapter extends RecyclerView.Adapter <ReportAdapter.ReportVie
         } else {
             reportViewHolder.reportLinearLayout.setBackgroundResource(R.color.NaoResolvido);
         }
+        reportViewHolder.totalInteracoesTextView.setText(String.valueOf(reports.get(i).getQtdTentativas()));
 
     }
 

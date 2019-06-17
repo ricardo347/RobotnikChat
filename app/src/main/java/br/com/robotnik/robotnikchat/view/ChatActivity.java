@@ -1,6 +1,10 @@
 package br.com.robotnik.robotnikchat.view;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +16,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -20,12 +25,14 @@ import java.util.List;
 
 import br.com.robotnik.robotnikchat.control.AssistantFactory;
 import br.com.robotnik.robotnikchat.R;
+import br.com.robotnik.robotnikchat.control.ConnectionStateMonitor;
 import br.com.robotnik.robotnikchat.model.Sessao;
 import br.com.robotnik.robotnikchat.model.SessaoDAO;
 import br.com.robotnik.robotnikchat.model.Usuario;
 
 public class ChatActivity extends AppCompatActivity {
     private ChatAdapter adapter;
+
     private List<Chat> chats;
     private RecyclerView chatRecyclerView;
     private ImageButton enviarButton;
@@ -35,6 +42,8 @@ public class ChatActivity extends AppCompatActivity {
     private int idUsuario;
     private String nomeUsuario;
     private String emailUsuario;
+    private ConnectionStateMonitor monitor ;
+
 
 
     @Override
@@ -52,6 +61,10 @@ public class ChatActivity extends AppCompatActivity {
         chatEditText = findViewById(R.id.chatEditText);
         enviarButton = findViewById(R.id.enviarButton);
         chats = new ArrayList<>();
+        monitor = new ConnectionStateMonitor(this);
+        monitor.enable();
+
+
 
         chatEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -60,21 +73,27 @@ public class ChatActivity extends AppCompatActivity {
                 switch (actionId){
                     case EditorInfo
                             .IME_ACTION_DONE:
-                        chats.add(new Chat(chatEditText.getText().toString(),1));
-                        adapter.notifyDataSetChanged();
 
                         AssistantFactory assistant  = new AssistantFactory(chatRecyclerView, chats);
-                        assistant.execute(chatEditText.getText().toString());
 
-                        chatEditText.setText("");
-                        chatRecyclerView.scrollToPosition(chats.size() - 1);
-                        chatEditText.setEnabled(false);
+                        if(monitor.getConnectivityStatus()){//está online
+                            if(chatEditText.getText().length() > 0){
+                                chats.add(new Chat(chatEditText.getText().toString(),1));
+                                adapter.notifyDataSetChanged();
+                                assistant.execute(chatEditText.getText().toString());
+
+                                chatEditText.setText("");
+                                chatRecyclerView.scrollToPosition(chats.size() - 1);
+                                chatEditText.setEnabled(false);
+                            }
+                        }else{//offline
+                            Toast.makeText(getApplicationContext(), "Verifique sua conexão com a internet", Toast.LENGTH_SHORT).show();
+                        }
                 }
 
                 return false;
             }
         });
-
 
         //inicialização da sessão
         //recuperar o usuario do login do intent
@@ -102,17 +121,18 @@ public class ChatActivity extends AppCompatActivity {
         enviarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(chatEditText.getText().length() > 0){
-                    chats.add(new Chat(chatEditText.getText().toString(),1));
-                    adapter.notifyDataSetChanged();
-
-                    AssistantFactory assistant  = new AssistantFactory(chatRecyclerView, chats);
-                    assistant.execute(chatEditText.getText().toString());
-
-                    chatEditText.setText("");
-                    chatRecyclerView.scrollToPosition(chats.size() - 1);
-                    chatEditText.setEnabled(false);
+                if(monitor.getConnectivityStatus()){
+                    if(chatEditText.getText().length() > 0){
+                        chats.add(new Chat(chatEditText.getText().toString(),1));
+                        adapter.notifyDataSetChanged();
+                        AssistantFactory assistant = new AssistantFactory(chatRecyclerView, chats);
+                        assistant.execute(chatEditText.getText().toString());
+                        chatEditText.setText("");
+                        chatRecyclerView.scrollToPosition(chats.size() - 1);
+                        chatEditText.setEnabled(false);
+                    }
+                } else{
+                    Toast.makeText(getApplicationContext(), "Verifique sua conexão com a internet", Toast.LENGTH_SHORT).show();
                 }
             }
 
